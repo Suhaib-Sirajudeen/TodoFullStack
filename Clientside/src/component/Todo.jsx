@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import "./Todo.css";
-import { useAxios } from "../hooks/useAxios";
-import axios from "../apis/todoApi.js";
+import { useTodo } from "../hooks/useTodo.jsx";
 
 export const Todo = () => {
   const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState([]);
   const [editTaskId, SetEditTaskId] = useState("");
   const [editedTask, setEditedTask] = useState("");
   const [error, setError] = useState({
     errorTask: "",
     errorOnEdit: "",
   }); // for display the error
-  const [todoList, loading, err, axiosFetch] = useAxios();
+
+  const [todoList, getTodo, postTodo, updateTodo, deleteTodo, editComplete] =
+    useTodo();
 
   const handleInput = (event) => {
     // get input value from the user
@@ -21,15 +21,8 @@ export const Todo = () => {
 
   const addTasktoTasks = () => {
     if (newTask) {
-      axiosFetch({
-        axiosInstance: axios,
-        method: "post",
-        url: "/api/todo",
-        reqConfiq: {
-          todo: newTask,
-        },
-      });
-      setTasks(todoList);
+      postTodo(newTask);
+
       setError((prev) => ({ ...prev, errorTask: "" }));
     } else {
       setError((prev) => ({ ...prev, errorTask: "Please enter your Task!" }));
@@ -38,31 +31,8 @@ export const Todo = () => {
     setNewTask("");
   };
 
-  const getData = () => {
-    axiosFetch({
-      axiosInstance: axios,
-      method: "get",
-      url: "/api/todo",
-    });
-    console.log(tasks, "tasks");
-  };
-
-  useEffect(() => {
-    getData();
-    setTasks(todoList);
-  }, []);
-
   const deleteTask = (id) => {
-    axiosFetch({
-      axiosInstance: axios,
-      method: "delete",
-      url: `/api/todo/`,
-      reqConfiq: {
-        data: {
-          id: id,
-        },
-      },
-    });
+    deleteTodo(id);
   };
 
   const updateId = (tasks) => {
@@ -71,16 +41,8 @@ export const Todo = () => {
   };
   const updateTasks = (id) => {
     if (editedTask) {
-      axiosFetch({
-        axiosInstance: axios,
-        method: "put",
-        url: "/api/todo",
-        reqConfiq: {
-          id,
-          todo: editedTask,
-          isCompleted: true,
-        },
-      });
+      updateTodo(id, editedTask);
+
       SetEditTaskId("");
       setError((prev) => ({ ...prev, errorOnEdit: "" }));
     } else {
@@ -91,15 +53,8 @@ export const Todo = () => {
     }
   };
 
-  const editComplete = (id) => {
-    axiosFetch({
-      axiosInstance: axios,
-      method: "put",
-      url: "/api/todo/iscomplete",
-      reqConfiq: {
-        id,
-      },
-    });
+  const completeTask = (id) => {
+    editComplete(id);
   };
 
   return (
@@ -143,7 +98,10 @@ export const Todo = () => {
                         SAVE
                       </button>
                       <button
-                        style={{ backgroundColor: "#8FA8C1", color: "#0C5488" }}
+                        style={{
+                          backgroundColor: "#8FA8C1",
+                          color: "#0C5488",
+                        }}
                         className="cancel-button"
                         onClick={() => SetEditTaskId("")}
                       >
