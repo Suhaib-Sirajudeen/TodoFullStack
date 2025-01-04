@@ -8,12 +8,12 @@ const error = (requiredItems) => {
     });
     if (err.length > 0) {
       return res
-        .status(404)
-        .json(
-          `this ${JSON.stringify(
+        .status(401)
+        .json({
+          message: `this ${JSON.stringify(
             Object.keys(req.body)
-          )} attributes are not acceptable ,required attributes are ${err}`
-        );
+          )} attributes are not acceptable ,required attributes are ${err}`,
+        });
     }
     next();
   };
