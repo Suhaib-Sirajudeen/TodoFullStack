@@ -9,12 +9,11 @@ export const useTodo = () => {
     getTodo();
     console.log("hi");
   }, []);
+  
   useEffect(() => {
     getTodo();
   }, [message]);
-  useEffect(() => {
-    console.log(todoList, "from useTodo");
-  }, [loading]);
+  
 
   const getTodo = () => {
     axiosFetch({
