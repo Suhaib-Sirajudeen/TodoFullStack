@@ -10,11 +10,8 @@ export const useTodo = () => {
     console.log("hi");
   }, []);
   useEffect(() => {
-    getTodo();
+    if (statusCode === 200) getTodo();
   }, [message]);
-  useEffect(() => {
-    console.log(todoList, "from useTodo");
-  }, [loading]);
 
   const getTodo = () => {
     axiosFetch({

@@ -53,9 +53,9 @@ export const Todo = () => {
     }
   };
 
-  const completeTask = (id) => {
-    editComplete(id);
-  };
+  // const completeTask = (id) => {
+  //   editComplete(id);
+  // };
 
   return (
     <>
