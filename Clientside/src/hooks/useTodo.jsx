@@ -9,6 +9,7 @@ export const useTodo = () => {
     getTodo();
     console.log("hi");
   }, []);
+  
   useEffect(() => {
     if (statusCode === 200) getTodo();
   }, [message]);
